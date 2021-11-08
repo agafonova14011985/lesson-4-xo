@@ -11,13 +11,13 @@ public class TicTacToeGame {
     private static char[][] field;
     private static int fieldSizeX;
     private static int fieldSizeY;
-    private static int scoreHuman;
-    private static int scoreAi;
-    private static int roundCounter;
+    //private static int scoreHuman;
+    //private static int scoreAi;
+    //private static int roundCounter;
 
     public static void main(String[] args) {
 
-        initField(3,3);
+        initField(5,5);
         printFielend();
         while (true) {
             humanTurn();
@@ -30,8 +30,10 @@ public class TicTacToeGame {
         if (checkWin(DOT_O)){
             System.out.println("Выиграл комп!!!"); break; }
             if (checkDraw()) break;}
-    }
+        System.out.println("игра закончена");
 
+    }
+// Ход компьютера
     private static void aiTurn(){
         int x;
         int y;
@@ -42,47 +44,69 @@ public class TicTacToeGame {
         field[y][x] = DOT_O;
     }
 
+    //Ход человека
     private static void humanTurn(){
         int x;
         int y;
         do {
-        System.out.print("Пожалйста введите координаты x и y");
+        System.out.print("Пожалйста введите координаты x и y >>> (от 1 до 5 через пробел) ");
         x = scaner.nextInt() - 1;
         y = scaner.nextInt() - 1;}
         while (!isCellValid(y, x) || !isCellEmpty(y, x));
         field[y][x] = DOT_X;
     }
 
+    // Проверка победы
     private static boolean checkWin(char dot){
-        //проверка совпадений по горизонтали
-        if (field[0][0] == dot && field[0][1] == dot && field[0][2] == dot) return true;
-        if (field[1][0] == dot && field[1][1] == dot && field[1][2] == dot) return true;
-        if (field[2][0] == dot && field[2][1] == dot && field[2][2] == dot) return true;
-        // проверка совпадений по вертикали
-        if (field[0][0] == dot && field[1][0] == dot && field[2][0] == dot) return true;
-        if (field[0][1] == dot && field[1][1] == dot && field[2][1] == dot) return true;
-        if (field[0][2] == dot && field[1][2] == dot && field[2][2] == dot) return true;
-        //проверка диагоналей
-        if (field[0][0] == dot && field[1][1] == dot && field[2][2] == dot) return true;
-        if (field[0][2] == dot && field[1][1] == dot && field[2][0] == dot) return true;
-        return false;
-    }
 
+        int diag1, diag2, hor, ver;
+        for ( int y = 0; y < 5; y++ ) {hor = 0; ver = 0;
+        for (int  x = 0 ; x < 5; x++){
+            if (field[y][x] == dot){hor++;}
+        if (field[x][y] == dot) {ver++;}
+        }
+        if (hor == 5 || ver == 5) {return true;}
+        }
+        diag1 = 0; diag2 = 0;
+        for (int y = 0; y < 5; y++ ){
+            if(field[y][y] == dot) {diag1++;}
+            if(field[y][5 - y - 1] == dot) {diag2++;}}
+        if (diag1 == 5 || diag2 == 5) {return true;}
+        return false;}
+
+
+        //проверка совпадений по горизонтали для 3 на 3
+        //if (field[0][0] == dot && field[0][1] == dot && field[0][2] == dot) return true;
+        //if (field[1][0] == dot && field[1][1] == dot && field[1][2] == dot) return true;
+        //if (field[2][0] == dot && field[2][1] == dot && field[2][2] == dot) return true;
+        // проверка совпадений по вертикали для 3 на 3
+        //if (field[0][0] == dot && field[1][0] == dot && field[2][0] == dot) return true;
+        //if (field[0][1] == dot && field[1][1] == dot && field[2][1] == dot) return true;
+        //if (field[0][2] == dot && field[1][2] == dot && field[2][2] == dot) return true;
+        //проверка диагоналей для 3 на 3
+        //if (field[0][0] == dot && field[1][1] == dot && field[2][2] == dot) return true;
+        //if (field[0][2] == dot && field[1][1] == dot && field[2][0] == dot) return true;
+        //return false;
+    //}
+
+    //Ничья
     private static boolean checkDraw(){
         for (int y = 0; y < fieldSizeY; y++){
             for (int x = 0; x < fieldSizeX; x++){
             if (isCellEmpty(y,x)) return false;}
         }
-        System.out.println("It's DRAW!!");
+        System.out.println("ничья!!");
         return true; }
 
+    //пустые клетки
     private static boolean isCellEmpty(int y, int x){
         return field[y][x] == DOT_EMPTY; }
 
+     // Промежутки значений
     private static boolean isCellValid(int y, int x){
-        return x >= 0 && y >= 0 && x <= fieldSizeX && y <= fieldSizeY;
-    }
+        return x >= 0 && y >= 0 && x <= fieldSizeX && y <= fieldSizeY; }
 
+        //поле
     private static void initField(int sizeX, int sizeY){
         fieldSizeX = sizeX;
         fieldSizeY = sizeY;
@@ -98,13 +122,7 @@ public class TicTacToeGame {
         for (int i = 0; i < fieldSizeX * 2 + 1; i++){
             System.out.print(i % 2 == 0 ? "-" : i / 2 + 1); }
 
-        // if (i % 2 == 0) {sout("-"); то же самое что и предыдущая сттрока
-        // } else { sout(i / 2 + 1);}
 
-        //for (int y = 0; y < fieldSizeY; y++){ это упрощенное написание printFielend
-            //for (int x = 0; x < fieldSizeX; x++){
-                //System.out.print(field[y][x] + " "); }
-            //System.out.println();}
         System.out.println();
         for (int i = 0; i < fieldSizeY; i++){
             System.out.print(i + 1 + "|");
